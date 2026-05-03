@@ -20,11 +20,11 @@
     <header>
 
         <nav class="cabecalho">
-            <a class="logo" href="../index.html"></a>
+            <a class="logo" href="../"></a>
 
             <div class="cabecalho__icones">
-                <a href="./enviar-video.html" class="cabecalho__videos"></a>
-                <a href="../pages/login.html" class="cabecalho__sair">Sair</a>
+                <a href="./enviar-video" class="cabecalho__videos"></a>
+                <a href="../pages/login" class="cabecalho__sair">Sair</a>
             </div>
         </nav>
 
@@ -33,21 +33,21 @@
     <main class="container">
 
         <form class="container__formulario">
-            <h2 class="formulario__titulo">Envie um vídeo!</h3>
+            <h2 class="formulario__titulo">Efetue login</h3>
                 <div class="formulario__campo">
-                    <label class="campo__etiqueta" for="url">Link embed</label>
-                    <input name="url" class="campo__escrita" required
-                        placeholder="Por exemplo: https://www.youtube.com/embed/FAY1K2aUg5g" id='url' />
+                    <label class="campo__etiqueta" for="usuario">Usuário</label>
+                    <input name="user" class="campo__escrita" required
+                        placeholder="Digite seu usuário" id='usuario' />
                 </div>
 
 
                 <div class="formulario__campo">
-                    <label class="campo__etiqueta" for="titulo">Titulo do vídeo</label>
-                    <input name="titulo" class="campo__escrita" required placeholder="Neste campo, dê o nome do vídeo"
-                        id='titulo' />
+                    <label class="campo__etiqueta" for="senha">Senha</label>
+                    <input type="password" name="senha" class="campo__escrita" required placeholder="Digite sua senha"
+                        id='senha' />
                 </div>
 
-                <input class="formulario__botao" type="submit" value="Enviar" />
+                <input class="formulario__botao" type="submit" value="Entrar" />
         </form>
 
     </main>
