@@ -2,3 +2,4 @@
 vendor/
 banco.sqlite
 .Backup/
+.Old/
