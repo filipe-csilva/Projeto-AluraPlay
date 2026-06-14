@@ -27,6 +27,13 @@
             $userDate = $stmt->fetch(\PDO::FETCH_ASSOC);
             $correctPassword = password_verify($password, $userDate['password'] ?? '');
 
+            if(password_needs_rehash($userDate['password'], PASSWORD_ARGON2ID)){
+                $stmt = $this->pdo->prepare('UPDATE users SET password = ? WHERE id = ?');
+                $stmt->bindValue(1, password_hash($password, PASSWORD_ARGON2ID));
+                $stmt->bindValue(2, $userDate['id']);
+                $stmt->execute();
+            }
+
             if ($correctPassword) {
                 $_SESSION['logado'] = true;
                 header('Location: /');

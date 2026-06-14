@@ -19,12 +19,16 @@
 <header>
 
     <nav class="cabecalho">
-        <a class="logo" href="/"></a>
-
-        <div class="cabecalho__icones">
-            <a href="/novo-video" class="cabecalho__videos"></a>
-            <a href="/logout" class="cabecalho__sair">Sair</a>
-        </div>
+        <a class="logo" href="/"></a>        
+        <?php
+            session_start();
+            if (array_key_exists('logado', $_SESSION)):
+            ?>
+            <div class="cabecalho__icones">
+                <a href="/novo-video" class="cabecalho__videos"></a>
+                <a href="/logout" class="cabecalho__sair">Sair</a>
+            </div>
+        <?php endif; ?>        
     </nav>
 
 </header>
