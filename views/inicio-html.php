@@ -32,3 +32,8 @@
     </nav>
 
 </header>
+
+<h2 class="formulario__titulo erro">
+    <?= $_SESSION['error_message']; ?>
+    <?php unset($_SESSION['error_message']); ?>
+</h2>
