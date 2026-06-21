@@ -36,12 +36,11 @@ class EditVideoController implements Controller
         $video->setId($id);
 
         if ($_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $safeFileName = uniqid('upload_') . '_' . pathinfo($_FILES['image']['name'], PATHINFO_BASENAME, CASE_LOWER);
             $finfo = new \finfo(FILEINFO_MIME_TYPE);
-            $mimeType = $finfo->file($_FILES['image']['tmp_name']);
-
-            if (str_starts_with($mimeType, 'image/')) {
-                $safeFileName = uniqid('upload_') . '_' . pathinfo($_FILES['image']['name'], PATHINFO_BASENAME);
-                move_uploaded_file(
+            $mineType = $finfo->file($_FILES['image']['name']);
+            if(str_starts_with($mineType, 'image/')){
+                    move_uploaded_file(
                     $_FILES['image']['tmp_name'],
                     __DIR__ . '/../../public/img/uploads/' . $safeFileName
                 );

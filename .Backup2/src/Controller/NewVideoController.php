@@ -5,56 +5,53 @@ declare(strict_types=1);
 namespace Alura\Mvc\Controller;
 
 use Alura\Mvc\Entity\Video;
+use Alura\Mvc\Helper\FlashMessageTrait;
 use Alura\Mvc\Repository\VideoRepository;
 
-class EditVideoController implements Controller
+class NewVideoController implements Controller
 {
+    use FlashMessageTrait;
+
     public function __construct(private VideoRepository $videoRepository)
     {
     }
 
     public function processaRequisicao(): void
     {
-        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-        if ($id === false || $id === null) {
-            header('Location: /?sucesso=0');
+        $url = filter_input(INPUT_POST, 'url', FILTER_VALIDATE_URL);
+        if ($url === false) {
+            $this->addErrorMessage('URL invélida!');
+            header('Location: /novo-video');
             return;
         }
 
-        $url = filter_input(INPUT_POST, 'url', FILTER_VALIDATE_URL);
-        if ($url === false) {
-            header('Location: /?sucesso=0');
-            return;
-        }
         $titulo = filter_input(INPUT_POST, 'titulo');
         if ($titulo === false) {
-            header('Location: /?sucesso=0');
+            $this->addErrorMessage('Título não informado!');
+            header('Location: /novo-video');
             return;
         }
 
         $video = new Video($url, $titulo);
-        $video->setId($id);
-
         if ($_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $safeFileName = uniqid('upload_') . '_' . pathinfo($_FILES['image']['name'], PATHINFO_BASENAME, CASE_LOWER);
             $finfo = new \finfo(FILEINFO_MIME_TYPE);
-            $mimeType = $finfo->file($_FILES['image']['tmp_name']);
-
-            if (str_starts_with($mimeType, 'image/')) {
-                $safeFileName = uniqid('upload_') . '_' . pathinfo($_FILES['image']['name'], PATHINFO_BASENAME);
-                move_uploaded_file(
+            $mineType = $finfo->file($_FILES['image']['name']);
+            if(str_starts_with($mineType, 'image/')){
+                    move_uploaded_file(
                     $_FILES['image']['tmp_name'],
                     __DIR__ . '/../../public/img/uploads/' . $safeFileName
                 );
                 $video->setFilePath($safeFileName);
             }
         }
-
-        $success = $this->videoRepository->update($video);
-
+        
+        $success = $this->videoRepository->add(new Video($url, $titulo));
         if ($success === false) {
-            header('Location: /?sucesso=0');
+            $this->addErrorMessage('Erro ao cadastrar vídeo!');
+            header('Location: /novo-video');
         } else {
-            header('Location: /?sucesso=1');
+            header('Location: /');
         }
     }
 }

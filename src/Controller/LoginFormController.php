@@ -1,19 +1,22 @@
 <?php
-    declare(strict_types=1);
 
-    namespace Alura\Mvc\Controller;
+declare(strict_types=1);
 
-    use Alura\Mvc\Helper\HtmlRendererTrait;
+namespace Alura\Mvc\Controller;
 
-    class LoginFormController extends ControllerWithHtml implements Controller{
-        use HtmlRendererTrait;
-        public function processaRequisicao(): void
-        {
-            if(array_key_exists('logado', $_SESSION) && $_SESSION['logado'] === true){
-                header('Location: /');
-                return;
-            }
-            //require_once __DIR__ ."/../../views/login-form.php";
-            $this->renderTemplate('login-form');
+use Alura\Mvc\Helper\HtmlRendererTrait;
+
+class LoginFormController implements Controller
+{
+    use HtmlRendererTrait;
+
+    public function processaRequisicao(): void
+    {
+        if (array_key_exists('logado', $_SESSION) && $_SESSION['logado'] === true) {
+            header('Location: /');
+            return;
         }
+
+        echo $this->renderTemplate('login-form');
     }
+}

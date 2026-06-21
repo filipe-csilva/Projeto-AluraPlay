@@ -20,38 +20,38 @@ class NewVideoController implements Controller
     {
         $url = filter_input(INPUT_POST, 'url', FILTER_VALIDATE_URL);
         if ($url === false) {
-            $this->addErrorMessage('URL invélida!');
+            $this->addErrorMessage('URL inválida');
             header('Location: /novo-video');
             return;
         }
-
         $titulo = filter_input(INPUT_POST, 'titulo');
         if ($titulo === false) {
-            $this->addErrorMessage('Título não informado!');
+            $this->addErrorMessage('Título não informado');
             header('Location: /novo-video');
             return;
         }
 
         $video = new Video($url, $titulo);
         if ($_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $safeFileName = uniqid('upload_') . '_' . pathinfo($_FILES['image']['name'], PATHINFO_BASENAME, CASE_LOWER);
             $finfo = new \finfo(FILEINFO_MIME_TYPE);
-            $mineType = $finfo->file($_FILES['image']['name']);
-            if(str_starts_with($mineType, 'image/')){
-                    move_uploaded_file(
+            $mimeType = $finfo->file($_FILES['image']['tmp_name']);
+
+            if (str_starts_with($mimeType, 'image/')) {
+                $safeFileName = uniqid('upload_') . '_' . pathinfo($_FILES['image']['name'], PATHINFO_BASENAME);
+                move_uploaded_file(
                     $_FILES['image']['tmp_name'],
                     __DIR__ . '/../../public/img/uploads/' . $safeFileName
                 );
                 $video->setFilePath($safeFileName);
             }
         }
-        
-        $success = $this->videoRepository->add(new Video($url, $titulo));
+
+        $success = $this->videoRepository->add($video);
         if ($success === false) {
-            $this->addErrorMessage('Erro ao cadastrar vídeo!');
+            $this->addErrorMessage('Erro ao cadastrar vídeo');
             header('Location: /novo-video');
         } else {
-            header('Location: /');
+            header('Location: /?sucesso=1');
         }
     }
 }

@@ -11,7 +11,6 @@ use Alura\Mvc\Repository\VideoRepository;
 class VideoFormController implements Controller
 {
     use HtmlRendererTrait;
-
     public function __construct(private VideoRepository $repository)
     {
     }
@@ -25,8 +24,8 @@ class VideoFormController implements Controller
             $video = $this->repository->find($id);
         }
 
-        echo $this->renderTemplate('video-form', [
-            'video' => $video,
-        ]);
+        // require_once __DIR__ . '/../../views/video-form.php';
+        $this->renderTemplate('video-form', ['video' => $video]);
+
     }
 }
